@@ -19,23 +19,24 @@
  */
 
 // ** Database settings - You can get this info from your web host ** //
+$url = parse_url(getenv("DATABASE_URL"));
+
+$host = $url["host"];
+$username = $url["user"];
+$password = $url["pass"];
+$database = substr($url["path"], 1);
+
 /** The name of the database for WordPress */
-define( 'DB_NAME', 'database_name_here' );
+define( 'DB_NAME', $database );
 
-/** Database username */
-define( 'DB_USER', 'username_here' );
+/** MySQL database username */
+define( 'DB_USER', $username );
 
-/** Database password */
-define( 'DB_PASSWORD', 'password_here' );
+/** MySQL database password */
+define( 'DB_PASSWORD', $password );
 
-/** Database hostname */
-define( 'DB_HOST', 'localhost' );
-
-/** Database charset to use in creating database tables. */
-define( 'DB_CHARSET', 'utf8' );
-
-/** The database collate type. Don't change this if in doubt. */
-define( 'DB_COLLATE', '' );
+/** MySQL hostname */
+define( 'DB_HOST', $host );
 
 /**#@+
  * Authentication unique keys and salts.
@@ -48,14 +49,6 @@ define( 'DB_COLLATE', '' );
  *
  * @since 2.6.0
  */
-define( 'AUTH_KEY',         'put your unique phrase here' );
-define( 'SECURE_AUTH_KEY',  'put your unique phrase here' );
-define( 'LOGGED_IN_KEY',    'put your unique phrase here' );
-define( 'NONCE_KEY',        'put your unique phrase here' );
-define( 'AUTH_SALT',        'put your unique phrase here' );
-define( 'SECURE_AUTH_SALT', 'put your unique phrase here' );
-define( 'LOGGED_IN_SALT',   'put your unique phrase here' );
-define( 'NONCE_SALT',       'put your unique phrase here' );
 
 /**#@-*/
 
@@ -79,7 +72,12 @@ $table_prefix = 'wp_';
  *
  * @link https://wordpress.org/documentation/article/debugging-in-wordpress/
  */
-define( 'WP_DEBUG', false );
+define( 'WP_DEBUG', true );
+define('WP_DEBUG_LOG', true);
+
+if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+	$_SERVER['HTTPS'] = 'on';
+}
 
 /* Add any custom values between this line and the "stop editing" line. */
 
